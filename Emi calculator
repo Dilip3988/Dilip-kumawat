@@ -1,0 +1,40 @@
+def calculate_emi(principal, interest_rate, tenure):
+    """
+    Calculate EMI for a loan.
+
+    Args:
+        principal (float): The principal amount of the loan.
+        interest_rate (float): The annual interest rate of the loan.
+        tenure (int): The loan tenure in years.
+
+    Returns:
+        float: The EMI amount.
+    """
+    # Convert interest rate from annual to monthly
+    monthly_interest_rate = (interest_rate / 100) / 12
+
+    # Convert tenure from years to months
+    tenure_in_months = tenure * 12
+
+    # Calculate EMI using the formula: EMI = P x R x (1 + R)^N / ((1 + R)^N - 1)
+    emi = (principal * monthly_interest_rate * (1 + monthly_interest_rate) ** tenure_in_months) / (
+                (1 + monthly_interest_rate) ** tenure_in_months - 1)
+
+    return emi
+
+
+def main():
+    # Get user input
+    principal = float(input("Enter the principal amount: "))
+    interest_rate = float(input("Enter the annual interest rate (in %): "))
+    tenure = int(input("Enter the loan tenure (in years): "))
+
+    # Calculate EMI
+    emi = calculate_emi(principal, interest_rate, tenure)
+
+    # Print the result
+    print(f"Your EMI is: ₹{emi:.2f}")
+
+
+if __name__ == "__main__":
+    main()
