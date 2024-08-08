@@ -1,0 +1,73 @@
+def calculate_emi(principal, interest_rate, tenure):
+    """
+    Calculates the Equated Monthly Installment (EMI) for a loan.
+
+    Args:
+        principal (float): The principal amount of the loan.
+        interest_rate (float): The annual interest rate of the loan (in %).
+        tenure (int): The loan tenure in years.
+
+    Returns:
+        float: The calculated EMI.
+    """
+    # Convert interest rate from % to decimal and monthly
+    monthly_interest_rate = (interest_rate / 100) / 12
+
+    # Calculate the number of monthly installments
+    num_installments = tenure * 12
+
+    # Calculate the EMI using the formula: EMI = P x R x (1 + R)^N / ((1 + R)^N - 1)
+    emi = (principal * monthly_interest_rate * (1 + monthly_interest_rate) ** num_installments) / (
+                (1 + monthly_interest_rate) ** num_installments - 1)
+
+    return emi
+import tkinter as tk
+from tkinter import messagebox
+from emi_calculator import calculate_emi
+
+class EMI_Calculator:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("EMI Calculator")
+
+        # Create input fields
+        self.principal_label = tk.Label(self.window, text="Principal Amount:")
+        self.principal_label.grid(row=0, column=0)
+        self.principal_entry = tk.Entry(self.window)
+        self.principal_entry.grid(row=0, column=1)
+
+        self.interest_rate_label = tk.Label(self.window, text="Interest Rate (%):")
+        self.interest_rate_label.grid(row=1, column=0)
+        self.interest_rate_entry = tk.Entry(self.window)
+        self.interest_rate_entry.grid(row=1, column=1)
+
+        self.tenure_label = tk.Label(self.window, text="Loan Tenure (years):")
+        self.tenure_label.grid(row=2, column=0)
+        self.tenure_entry = tk.Entry(self.window)
+        self.tenure_entry.grid(row=2, column=1)
+
+        # Create calculate button
+        self.calculate_button = tk.Button(self.window, text="Calculate EMI", command=self.calculate_emi)
+        self.calculate_button.grid(row=3, column=0, columnspan=2)
+
+        # Create result label
+        self.result_label = tk.Label(self.window, text="")
+        self.result_label.grid(row=4, column=0, columnspan=2)
+
+    def calculate_emi(self):
+        try:
+            principal = float(self.principal_entry.get())
+            interest_rate = float(self.interest_rate_entry.get())
+            tenure = int(self.tenure_entry.get())
+
+            emi = calculate_emi(principal, interest_rate, tenure)
+            self.result_label.config(text=f"Your monthly EMI is: ₹{emi:.2f}")
+        except ValueError:
+            messagebox.showerror("Error", "Invalid input. Please enter valid numbers.")
+
+    def run(self):
+        self.window.mainloop()
+
+if __name__ == "__main__":
+    calculator = EMI_Calculator()
+    calculator.run()
